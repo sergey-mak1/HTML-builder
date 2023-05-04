@@ -1,8 +1,7 @@
 const fs = require('fs');
 const path = require('path');
-let arr = []
 const secretFolder = path.join(__dirname,'secret-folder');
-const files = fs.readdir(secretFolder, (err, files) => {
+fs.readdir(secretFolder, (err, files) => {
   files.forEach(file => {
     fs.stat(path.join(secretFolder, file), (err, stats) => {
       const name =  path.basename(file, path.extname(file));
@@ -13,4 +12,4 @@ const files = fs.readdir(secretFolder, (err, files) => {
   }
    })
   });
-}, { withFileTypes: true });
+});

@@ -8,7 +8,7 @@ fs.mkdir(copyFolder, { recursive: true }, (err) => {
 fs.readdir(filesFolder,{withFileTypes:true},(err,files)=>{
     if (err) throw err;
     files.forEach(file => {
-        fs.copyFile(path.join(__dirname,'files',file.name),path.join(__dirname,'files-copy',file.name),(err)=>{
+        fs.copyFile(path.join(filesFolder,file.name),path.join(copyFolder,file.name),(err)=>{
             if (err) throw err; 
         })
     });
