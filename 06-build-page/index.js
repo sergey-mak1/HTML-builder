@@ -7,10 +7,12 @@ const assetsFolder = path.join(__dirname, 'assets');
 const assetsProject = path.join(__dirname, 'project-dist', 'assets');
 const stylesFolder = path.join(__dirname, 'styles');
 const components = path.join(__dirname, 'components');
-const newFileStyle = fs.createWriteStream(path.join(__dirname, 'project-dist','style.css'));
+const newFileStyle = fs.createWriteStream(path.join(__dirname, 'project-dist', 'style.css'));
 const stream = new fs.ReadStream(path.join(__dirname, 'template.html'), 'utf-8');
 const newFileIndex = (path.join(__dirname, 'project-dist', 'index.html'));
-let arr = [];
+
+
+
 fs.mkdir(projectFolder, { recursive: true }, (err) => {
   if (err) throw err;
 });
@@ -59,19 +61,21 @@ stream.on('readable', function () {
   let data = stream.read();
   if (data !== null) {
     const tags = data.match(/{{\w+}}/g);
-    tags.forEach(tag => {
+    tags.forEach((tag, i) => {
       const tagFile = path.join(components, `${tag.slice(2, -2)}.html`);
+      console.log(tagFile);
+      console.log(tag);
       fs.readFile(tagFile, 'utf-8', (err, tagData) => {
         if (err) throw err;
-        arr.push(tagData);
         data = data.replace(tag, tagData);
-        fs.writeFile(newFileIndex, data, (err) => {
-          if (err) throw err;
-        });
+        if (i === tags.length - 1) {
+          
+          const createIndex = fs.createWriteStream(newFileIndex);
+          createIndex.write(data);
+        
+        }
       });
     });
-
   }
 });
-
 
